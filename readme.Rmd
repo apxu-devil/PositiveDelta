@@ -1,11 +1,6 @@
 ---
 title: "PositiveDelta"
-author: "Andrei Arkhipov"
-date: '7 января 2019 г.'
-output: 
-  html_document: 
-    toc: true
-    highlight: tango
+output: github_document
 ---
 
 ```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
@@ -22,8 +17,6 @@ rm(source_funs)
 
 ```
 
-# Описание
-
 PositiveDelta - это модель данных и набор функций для анализа портфелей биржевых опционов. Механизм позволяет стоить профили портфелей, сравнивать несколько портфелей, расчитывать сценарии для разных дат и изменения волатильности.
 
 Пользователь может загрузить портфели и рыночные данные из любого доступного источника (база данных, сайт биржи, торговый терминал и т.д.). Для анализа данные должны иметь определённую структуру. 
@@ -39,7 +32,7 @@ PositiveDelta - это модель данных и набор функций д
 
 # Исходные данные
 
-## OptMarket
+## Котировки OptMarket
 
 В объект класса `OptMarket` загружаются биржевые котировки опционов, базисного актива, текущая дата, стоимость денег. Без рыночных цен портфель переоценивается только по его внутренней стоимости.
 
@@ -80,11 +73,10 @@ trades = GetTrades_fortsdb()
 # Забираем параметры опционов из доски опционов
 trades = TickerToParams_fortsboard(trades, mrkt$board)
 
+trades
 ```
 
-`r kable(trades)`
-
-На основании сделок создаём объект OptPort:
+На основании сделок создаём объект `OptPort`:
 
 * `ul` - тикер базисного актива (обязательно)
 
@@ -102,11 +94,10 @@ port = OptPort(ul = ul,
                name = 'Spread')
 
 port
-
 ```
 
 
-Ключевое поле после создания объекта - `position`. Это, собственно, и есть портфель - текущая позиция в опционах и базисном активе;
+Ключевое поле после создания объекта - `position`. Это, собственно, и есть портфель - текущая позиция в опционах и базисном активе.
 
 
 # Анализ портфеля
@@ -143,7 +134,7 @@ port$total_value
 Функция `PlotProfile` строит график профиля на базе `ggplot2`.
 
 
-```{r calc_profile, warning=FALSE , message=FALSE, fig.width=10, fig.height=10, fig.align='center' }
+```{r calc_profile, warning=FALSE , message=FALSE, fig.align='center' }
 myprofile = OptProfile(optport  = port, 
                        params   = c('pl', 'delta', 'theta', 'vega'), 
                        ul_range = 0.05) 
@@ -176,7 +167,7 @@ port2 = AddTrades(port = port,
                   trades = newtrade, 
                   sum_trades = T)
 
-port2$name = 'Short synth put'
+port2$name = 'Changed'
 ```
 
 
@@ -184,7 +175,7 @@ port2$name = 'Short synth put'
 Функция `JoinProfiles` объединяет данные профилей для построения общего графика.
 Первый профиль в списке - приоритетный. 
 
-```{r compare_profiles, warning=FALSE, message=FALSE}
+```{r compare_profiles, warning=FALSE, message=FALSE, fig.align='center' }
 port2 = port2 %>% PortPricing(., mrkt, price_at = 'theor') %>% PortValuation(.)
 
 myprofile2 = OptProfile(optport  = port2, params = c('pl', 'delta','theta', 'vega'), ul_range = 0.05) 

@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-GetTrades_fortsdb = function(src = "forts_64")
+GetTrades_fortsdb = function(src = "forts_64", onlyrequired=T)
   {
   # TODO: GetBoard - common function (interface), depending on scr calls other functions, which return brd
   require(RODBC)
@@ -27,6 +27,11 @@ GetTrades_fortsdb = function(src = "forts_64")
       select(tradedate, -tradetime, tradenum, ticker, buysell, quant, tradeprice, amount) 
     
     trades = trades %>% mutate(datetime = tradedate)
+    
+    if(onlyrequired)
+      trades = trades %>% 
+        select(ticker, buysell, quant, tradeprice, amount)
+    
     
     #mutate trade types to "Buy" or "Sell"
     trades = trades %>% dplyr::filter(!is.na(ticker)) 

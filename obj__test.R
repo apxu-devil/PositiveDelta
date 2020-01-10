@@ -4,6 +4,7 @@
 require(dplyr)
 require(plotly)
 
+setwd("C:\\Users\\Andrey\\Documents\\MyR\\PositiveDelta")
 source_funs = lapply(as.list(dir(path='funs')), function(x) source(file = paste0('funs\\', x) ) )
 rm(source_funs)
 
@@ -39,14 +40,13 @@ myprofile = OptProfile(optport  = port,
 ### PLOT PROFILE ###
 gg1 = PlotProfile(myprofile)
 
-PlotProfile(myprofile)  %>% ggplotly(.)
 
 
 ### 
 newtrade = data.frame(ul='SiZ9', ticker='Si63500BX9', xtype='p', strike=63500, expdate=as.Date('2019-12-19'), tradeprice=500, q=-1, amount=500 )
 
 port2 = AddTrades(port = port, trades = newtrade, sum_trades = T)
-
+port2$name = 'Changed'
 port2 = PortPricing(port2, mrkt, price_at = 'theor')
 
 port2 = PortValuation(port2)

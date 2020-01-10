@@ -194,7 +194,7 @@ OptProfile = function(optport,
   if(isEmpty(port$name))
     profile$port = 'Primary'
   else
-    profile$port = port$name
+    profile$port = optport$name
   
   # Output  
   optprofile$profile  = profile

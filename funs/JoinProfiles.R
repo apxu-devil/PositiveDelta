@@ -29,10 +29,10 @@ JoinProfiles = function(profiles){   # profiles = list(profile1, profile2,...)
     
     
     # Column with portfolio name
-    if(is.null(prfl$port))
+    if(is.null(prfl$profile$port))
       pdata$port = paste0('Portfolio_',n)
     else
-      pdata$port = prfl$port[1]
+      pdata$port = prfl$profile$port[1]
     
     # Add profile to common dataframe
     if(!is.null(sum_prfl))

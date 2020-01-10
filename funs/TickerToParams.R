@@ -69,11 +69,20 @@ TickerToParams_fortsboard = function(tickers=NULL, board=NULL, search_by='ticker
     
     tickers = data.frame(ticker=tickers)
     names(tickers$ticker) = search_by
-}
+  }
+  
+  # ticker_col_n = which(names(tickers)=='ticker')
+  # before_ticker = tickers[,c(1:ticker_col_n) ]
+  # after_ti
   
   board = board[, c('ticker', 'ul', 'xtype', 'strike', 'expdate')]
   
-  left_join(tickers, board, by=search_by)
+  tickers = left_join(tickers, board, by=search_by)
+  first_cols = which(names(tickers) %in% c('ticker', 'ul', 'xtype', 'strike', 'expdate'))
+  last_cols = which(! (names(tickers) %in% c('ticker', 'ul', 'xtype', 'strike', 'expdate')))
+  tickers = tickers[, c(first_cols, last_cols) ]
+  
+  return(tickers)
 }
 
 

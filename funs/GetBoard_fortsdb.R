@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' 
-GetBoard_fortsdb2 = function(ul='SiU9', src="forts_64"){
+GetBoard_fortsdb = function(ul='SiZ9', src="forts_64"){
   
   # TODO: GetBoard - common function (interface), depending on scr calls other functions, which return brd
   require(RODBC)
